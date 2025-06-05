@@ -186,6 +186,7 @@ function handleMotion(event) {
  */
 function hideAll() {
     PINcontainer.style.display      = 'none';
+    PINdisplay.style.display        = 'none';
     body.style.display              = 'none';
     head.style.display              = 'none';
     go.style.display                = 'none';
@@ -297,8 +298,10 @@ const display = function() {
 
       head.innerText = "Enter the give PIN (" + (cnt_PINS+1) + "/" + shuffledPINS.length + ")"; 
       body.innerText = shuffledPINS[cnt_PINS];
+      body.style.fontSize = "20px";
 
       PINdisplay.style.display = 'block';
+      PINdisplay.style.fontSize = "20px";
       PINcontainer.style.display = 'block';
 
 
