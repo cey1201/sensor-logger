@@ -35,7 +35,7 @@ let accelerationIncludingGravity;
 let shuffledPINS;
 let cnt_PINS = 0;
 let status_PINS = "released";
-
+let btn;
 
 buttons.forEach(button => {
   button.addEventListener('mousedown', PINdown);
@@ -46,7 +46,7 @@ buttons.forEach(button => {
 
 function PINdown(event) {
   event.preventDefault(); // Prevent default touch behavior
-  const btn = event.target;
+  btn = event.target;
   status_PINS = "btn_" + btn.textContent;
   console.log(status_PINS);
 }
@@ -297,6 +297,10 @@ const display = function() {
 
       head.innerText = "Enter the give PIN (" + (cnt_PINS+1) + "/" + shuffledPINS.length + ")"; 
       body.innerText = shuffledPINS[cnt_PINS];
+
+      PINdisplay.style.display = 'block';
+      PINcontainer.style.display = 'block';
+
 
       break;
 
