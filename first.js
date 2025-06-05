@@ -49,8 +49,8 @@ function loadCSV() {
   fetch('top_PINS.csv')
   .then(res => res.text())
   .then(csvText => {    
-    console.log(csvText); // CSV 내용 확인용 출력
-    topPINS = csvText
+    console.log(csvText);
+    topPINS = csvText;
   })
   .catch(err => console.error(err));
 }
