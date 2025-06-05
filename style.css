@@ -125,14 +125,7 @@ option {
 }
 
 #PIN_display {
-  background: white;
-  color: black;
-
-  font-size: 2rem;
-  margin-bottom: 30px;
-  text-align: center;
-  letter-spacing: 8px;
-  height: 40px;
+  display: none;
 }
 
 .PIN_pad {

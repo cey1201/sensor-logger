@@ -9,6 +9,7 @@ const go              = document.getElementById('go');
 
 const demographics    = document.getElementById('demographics');
 
+const PINdisplay      = document.getElementById('PIN_display');
 const PINcontainer    = document.getElementById('PIN_container');
 const buttons         = document.querySelectorAll('.PIN_button');
 
@@ -29,17 +30,51 @@ let nextMode;
 let check_count       = 0;
 let interval          = -1;
 let topPINS;
-let rotationRate
-let accelerationIncludingGravity
+let rotationRate;
+let accelerationIncludingGravity;
+let shuffledPINS;
+let cnt_PINS = 0;
+let status_PINS = "released";
+
 
 buttons.forEach(button => {
-    button.addEventListener('click', () => {
-    if (pin.length < 6) {
-        pin += button.textContent;
-        PINdisplay.textContent = pin;
-    }
-    });
+  button.addEventListener('mousedown', PINdown);
+  button.addEventListener('mouseup', PINup);
+  button.addEventListener('touchstart', PINdown);
+  button.addEventListener('touchend', PINup);
 });
+
+function PINdown(event) {
+  event.preventDefault(); // Prevent default touch behavior
+  const btn = event.target;
+  status_PINS = "btn_" + btn.textContent;
+  console.log(status_PINS);
+}
+
+function PINup(event) {
+  event.preventDefault(); // Prevent default touch behavior
+  const targetPIN = shuffledPINS[cnt_PINS];
+  status_PINS = "released";
+
+  pin += btn.textContent;
+  PINdisplay.textContent = '*'.repeat(pin.length);
+
+  if (pin.length === targetPIN.length) {
+    if (pin === targetPIN) {
+      console.log("PIN correct!");
+      cnt_PINS += 1;
+    } else {
+      console.log("Incorrect PIN.");
+    }
+
+    nextMode = 'enter_PIN';
+    genericNext();
+
+    pin = '';
+    PINdisplay.textContent = '';
+  }
+}
+
 
 /******************************************************************************************************************************************************
  * FUNC: BackEnd
@@ -51,6 +86,7 @@ function loadCSV() {
   .then(csvText => {    
     console.log(csvText);
     topPINS = csvText;
+    topPINS = topPINS.split('\r\n');
   })
   .catch(err => console.error(err));
 }
@@ -145,26 +181,6 @@ function handleMotion(event) {
 }
 
 
-// function startLoggingMotion() {
-//   console.log('Listening to devicemotion...');
-//   window.addEventListener('devicemotion', (event) => {
-//     console.log('Motion event triggered'); // Add this
-
-//     const data = {
-//       acceleration: event.acceleration,
-//       rotationRate: event.rotationRate,
-//       timestamp: Date.now()
-//     };
-
-//     fetch('http://192.168.0.139:3000/log', {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify(data)
-//     });
-//   });
-// }
-
-
 /******************************************************************************************************************************************************
  * FUNC: App Architecture
  */
@@ -177,6 +193,10 @@ function hideAll() {
 
 
 const genericNext = function () {
+
+  if (mode == 'start_PIN') {
+    window.addEventListener('devicemotion', handleMotion);
+  }
 
   mode = nextMode;
   body.removeEventListener(getUpEvent(), genericNext);
@@ -249,7 +269,7 @@ const display = function() {
       break;            
 
     case 'start_PIN':
-      console.log("Enter subject ID number")
+      console.log("PIN entry intro/start");
       head.style.display         = 'block';
       body.style.display         = 'block';
       go.style.display           = 'block';
@@ -262,10 +282,22 @@ const display = function() {
       body.innerText = "You will now proceed to repeatedly enter 4-digit PIN displayed on the screen."
 
       // process shuffle TOP 100 PINs
+      shuffledPINS = shuffleArray(topPINS, 1);
 
       nextMode = 'enter_PIN';
       go.addEventListener(getUpEvent(), genericNext);
       go.innerText="Tap to begin";
+
+      break;
+
+    case 'enter_PIN':
+      console.log("start sessions");
+      head.style.display         = 'block';
+      body.style.display         = 'block';
+
+      head.innerText = "Enter the give PIN (" + (cnt_PINS+1) + "/" + shuffledPINS.length + ")"; 
+      body.innerText = shuffledPINS[cnt_PINS];
+
       break;
 
   }
@@ -275,6 +307,25 @@ const display = function() {
 /******************************************************************************************************************************************************
  * FUNC: Implementation 
  */
+
+function shuffleArray(array, rep) {
+    const arr = [];
+    for (var i = 0; i < array.length; i++) {
+        for (var j = 0; j < rep; j++) {
+            arr.push(array[i]);
+        }
+    }
+
+    // Fisher-Yates shuffle algorithm
+    for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];        
+    }
+    return arr;
+}
+
+
+
 
 hideAll();
 display();
