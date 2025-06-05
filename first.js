@@ -46,14 +46,26 @@ buttons.forEach(button => {
  */
 
 function loadCSV() {
-    fetch('/csv-preview')
-    .then(response => response.json())
-    .then(data => {
-        topPINS = data;
-        console.log('Successfully read - Top PIN datasets!'); // ⬅️ Display in browser console
+  fetch('top_PINS.csv')
+    .then(response => response.text())  // CSV는 텍스트로 받아야 함
+    .then(csvText => {    
+      const lines = csvText.trim().split('\n');
+      const headers = lines[0].split(',');
+      const data = lines.slice(1).map(line => {
+        const values = line.split(',');
+        let obj = {};
+        headers.forEach((header, i) => {
+          obj[header] = values[i];
+        });
+        return obj;
+      });
+
+      topPINS = data;
+      console.log('Successfully read - Top PIN datasets!');
+      console.log(topPINS);
     })
     .catch(err => {
-        console.error('Failed to load CSV:', err);
+      console.error('Failed to load CSV:', err);
     });
 }
 
