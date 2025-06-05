@@ -48,8 +48,9 @@ buttons.forEach(button => {
 function loadCSV() {
   fetch('top_PINS.csv')
   .then(res => res.text())
-  .then(csvText => {
+  .then(csvText => {    
     console.log(csvText); // CSV 내용 확인용 출력
+    topPINS = csvText
   })
   .catch(err => console.error(err));
 }
