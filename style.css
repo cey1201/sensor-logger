@@ -1,106 +1,82 @@
 * {
-  -webkit-tap-highlight-color: transparent; 
+  -webkit-tap-highlight-color: transparent;
 }
 
-div {
-    /*DEBUG: Area specification*/
-    /*border: 1px solid red;*/
-}
-img {
-    /*DEBUG: Area specification*/
-    /*border: 1px solid red;*/
+div, img {
+  /* DEBUG: Area specification */
+  /* border: 1px solid red; */
 }
 
 body {
-    background-color: white;
-    overscroll-behavior-y: contain;
-    position: relative;
-    height: 100vh;
-    margin: 0; /* reset default */
+  background-color: white;
+  overscroll-behavior-y: contain;
+  position: relative;
+  height: 100vh;
+  margin: 0;
 }
 
 select {
-    background-color: white;
-    max-width: 100%;
+  background-color: white;
+  max-width: 100%;
 }
 
 option {
-  -moz-white-space: pre-wrap; 
-  -o-white-space: pre-wrap; 
-  white-space: pre-wrap; 
+  white-space: pre-wrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-bottom: 1px solid black;
+  border-bottom: 0.1vw solid black;
 }
 
 .screen {
-    background-color: white;
-    color: black;
-    width: 100%;
-    height: 100vh; /* fill viewport */
-    position: relative; /* for absolute children */
-    font-size: 18px;
-    text-align: center;
-    font-family: Helvetica, Arial, sans-serif;
-    margin: 0 auto;
+  background-color: white;
+  color: black;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  font-size: 1.125rem; /* 18px */
+  text-align: center;
+  font-family: Helvetica, Arial, sans-serif;
+  margin: 0 auto;
 }
 
+.text,
+.textLarge {
+  background: white;
+  color: black;
+  width: 80%;
+  margin: auto;
+  font-family: Helvetica;
+  text-align: center;
+}
 
 .text {
-    /* Appearance */
-    background: white;
-    color: black;
-    /* Scale */
-    width: 80%;/*45mm*/;
-    top: 20vw;
-    /* Position */
-    margin: auto;
-    /*position: absolute;
-    left: 1.5mm;*/
-    /* Content */
-    font-size: 16px;
-    text-align: center;
-    font-family: Helvetica;
+  font-size: 1rem; /* 16px */
+  margin-top: 5vh;
 }
 
 .textLarge {
-    /* Appearance */
-    background: white;
-    color: black;
-    /* Scale */
-    width: 80%;/*45mm*/;
-    top: 20vw;
-    /* Position */
-    margin: auto;
-    /*position: absolute;
-    left: 1.5mm;*/
-    /* Content */
-    font-size: 20px;
-    text-align: center;
-    font-family: Helvetica;
+  font-size: 1.25rem; /* 20px */
+  margin-top: 5vh;
 }
 
 #head {
-    /* Scale */
-    height: 9mm;
-    /* Position */
-    margin-top: 10vw;
-    /* Content */
-    font-weight: bold;
-    line-height: 6.5mm;
+  margin-top: 10vh;
+  font-weight: bold;
+  line-height: 6.5vh;
+  font-size: 1.25rem;
 }
 
 #body {
-    margin-top: 10vw;
+  margin-top: 10vh;
 }
 
 .question {
-    text-align: center;
-    margin: auto; 
+  text-align: center;
+  margin: auto;
 }
 
 #demographics {
-    display: none;
+  display: none;
 }
 
 .PIN_container {
@@ -108,36 +84,33 @@ option {
   flex-direction: column;
   justify-content: flex-end;
   width: 100%;
-
   position: absolute;
-  bottom: 20%;
+  bottom: 20vh;
   left: 50%;
   transform: translateX(-50%);
-  
   box-sizing: border-box;
-  padding: 0 20px;
-
-  /* removed height: 100% to avoid stretching */
+  padding: 0 5vw;
 }
 
 #PINcontainer {
-    display: none;
+  display: none;
 }
 
 #PIN_display {
+  margin-top: 5vh;
   display: none;
 }
 
 .PIN_pad {
   display: grid;
-  grid-template-columns: repeat(3, 80px);
-  grid-gap: 20px;
+  grid-template-columns: repeat(3, 20vw); /* Responsive keypad */
+  grid-gap: 5vw;
   justify-content: center;
 }
 
 .PIN_button {
-  width: 80px;
-  height: 80px;
+  width: 20vw;
+  height: 20vw;
   border-radius: 50%;
   border: none;
   background-color: #e0e0e0;
@@ -160,22 +133,17 @@ option {
   grid-column: 2;
 }
 
-
 #go {
-    background: white;
-    color: black;
-    font-size: 20px;
-    text-align: center;
-    font-family: Helvetica;
-    border: 1px solid gray;
-
-    width: 46vw;
-    height:15vw;
-
-    /* Position */
-    position:absolute;
-    left: 27vw;
-    bottom: 18vw;
-    
-    line-height: 15vw;
+  background: white;
+  color: black;
+  font-size: 1.25rem;
+  text-align: center;
+  font-family: Helvetica;
+  border: 1px solid gray;
+  width: 46vw;
+  height: 15vw;
+  position: absolute;
+  left: 27vw;
+  bottom: 18vw;
+  line-height: 15vw;
 }
