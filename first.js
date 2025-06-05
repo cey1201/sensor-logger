@@ -47,26 +47,11 @@ buttons.forEach(button => {
 
 function loadCSV() {
   fetch('top_PINS.csv')
-    .then(response => response.text())  // CSV는 텍스트로 받아야 함
-    .then(csvText => {    
-      const lines = csvText.trim().split('\n');
-      const headers = lines[0].split(',');
-      const data = lines.slice(1).map(line => {
-        const values = line.split(',');
-        let obj = {};
-        headers.forEach((header, i) => {
-          obj[header] = values[i];
-        });
-        return obj;
-      });
-
-      topPINS = data;
-      console.log('Successfully read - Top PIN datasets!');
-      console.log(topPINS);
-    })
-    .catch(err => {
-      console.error('Failed to load CSV:', err);
-    });
+  .then(res => res.text())
+  .then(csvText => {
+    console.log(csvText); // CSV 내용 확인용 출력
+  })
+  .catch(err => console.error(err));
 }
 
 
