@@ -87,11 +87,12 @@ function PINup(event) {
   if (pin.length === targetPIN.length) {
     if (pin === targetPIN) {
       console.log("PIN correct!");
+      cnt_PINS += 1;
     } else {
       console.log("Incorrect PIN.");
     }
 
-    cnt_PINS += 1;
+    
 
     if (cnt_PINS >= shuffledPINS.length) {
       console.log("All PIN entries complete!");
@@ -316,8 +317,10 @@ const display = function() {
       body.innerText = "You will now proceed to repeatedly enter 4-digit PIN displayed on the screen."
 
       // process shuffle TOP 100 PINs
-      shuffledPINS = shuffleArray(topPINS, 1);
-
+      shuffledPINS = topPINS.splice(0, 9);
+      shuffledPINS = shuffleArray(shuffledPINS, 1);
+      
+      
       nextMode = 'enter_PIN';
       go.addEventListener(getUpEvent(), genericNext);
       go.innerText="Tap to begin";
