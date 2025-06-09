@@ -70,7 +70,7 @@ buttons.forEach(button => {
 function PINdown(event) {
   event.preventDefault(); // Prevent default touch behavior
   btn = event.target;
-  status_PINS = "btn_" + btn.textContent;
+  status_PINS = "btn_" + btn.innerText;
   console.log(status_PINS);
 }
 
@@ -80,9 +80,9 @@ function PINup(event) {
   const targetPIN = shuffledPINS[cnt_PINS];
   status_PINS = "released";
 
-  const key = event.target.textContent;
+  const key = event.target.innerText;
   pin += key;
-  PINdisplay.textContent = '*'.repeat(pin.length);
+  PINdisplay.innerText = '*'.repeat(pin.length);
 
   if (pin.length === targetPIN.length) {
     if (pin === targetPIN) {
@@ -108,7 +108,7 @@ function PINup(event) {
     }
 
     pin = '';
-    PINdisplay.textContent = '';
+    PINdisplay.innerText = '';
   }
 }
 
