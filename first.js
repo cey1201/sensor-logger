@@ -305,6 +305,9 @@ const display = function() {
 
     case 'start_PIN':
       console.log("PIN entry intro/start");
+
+      window.addEventListener('devicemotion', handleMotion);
+      
       head.style.display         = 'block';
       body.style.display         = 'block';
       go.style.display           = 'block';
@@ -324,6 +327,8 @@ const display = function() {
       nextMode = 'enter_PIN';
       go.addEventListener(getUpEvent(), genericNext);
       go.innerText="Tap to begin";
+
+      
       
       startWebSocket(); 
       startIMULogging();
