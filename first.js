@@ -37,6 +37,29 @@ let cnt_PINS = 0;
 let status_PINS = "released";
 let btn;
 
+
+let imuInterval = null;
+let imuSocket = null;
+let imuLog = [];
+
+// socket to connect to my computer
+function startWebSocket() {
+  imuSocket = new WebSocket('ws://192.168.0.139:3000');
+
+  imuSocket.onopen = () => {
+    console.log("WebSocket connection established.");
+  };
+
+  imuSocket.onerror = (err) => {
+    console.error("WebSocket error:", err);
+  };
+
+  imuSocket.onclose = () => {
+    console.log("WebSocket connection closed.");
+  };
+}
+
+
 buttons.forEach(button => {
   button.addEventListener('mousedown', PINdown);
   button.addEventListener('mouseup', PINup);
@@ -53,27 +76,41 @@ function PINdown(event) {
 
 function PINup(event) {
   event.preventDefault(); // Prevent default touch behavior
+
   const targetPIN = shuffledPINS[cnt_PINS];
   status_PINS = "released";
 
-  pin += btn.textContent;
+  const key = event.target.textContent;
+  pin += key;
   PINdisplay.textContent = '*'.repeat(pin.length);
 
   if (pin.length === targetPIN.length) {
     if (pin === targetPIN) {
       console.log("PIN correct!");
-      cnt_PINS += 1;
     } else {
       console.log("Incorrect PIN.");
     }
 
-    nextMode = 'enter_PIN';
-    genericNext();
+    cnt_PINS += 1;
+
+    if (cnt_PINS >= shuffledPINS.length) {
+      console.log("All PIN entries complete!");
+      stopIMULogging(); 
+      // Optional: End message or transition
+      head.innerText = "All PIN entries complete.";
+      body.innerText = "Thank you for participating.";
+      PINcontainer.style.display = 'none';
+      PINdisplay.style.display = 'none';
+    } else {
+      nextMode = 'enter_PIN';
+      genericNext();
+    }
 
     pin = '';
     PINdisplay.textContent = '';
   }
 }
+
 
 
 /******************************************************************************************************************************************************
@@ -195,10 +232,6 @@ function hideAll() {
 
 const genericNext = function () {
 
-  if (mode == 'start_PIN') {
-    window.addEventListener('devicemotion', handleMotion);
-  }
-
   mode = nextMode;
   body.removeEventListener(getUpEvent(), genericNext);
   hideAll();
@@ -288,6 +321,9 @@ const display = function() {
       nextMode = 'enter_PIN';
       go.addEventListener(getUpEvent(), genericNext);
       go.innerText="Tap to begin";
+      
+      startWebSocket(); 
+      startIMULogging();
 
       break;
 
@@ -312,7 +348,7 @@ const display = function() {
 
 
 /******************************************************************************************************************************************************
- * FUNC: Implementation 
+ * FUNC: Implementation / logger
  */
 
 function shuffleArray(array, rep) {
@@ -330,6 +366,56 @@ function shuffleArray(array, rep) {
     }
     return arr;
 }
+
+function startIMULogging() {
+    if (imuInterval) clearInterval(imuInterval);
+
+    imuLog = [];
+
+    imuInterval = setInterval(() => {
+        if (!accelerationIncludingGravity || !rotationRate) return;
+
+        const logEntry = {
+            subject: subID,
+            mode: mode,
+            matchTarget: shuffledPINS[cnt_PINS],
+            status: status_PINS,
+            accX: accelerationIncludingGravity.x || 0,
+            accY: accelerationIncludingGravity.y || 0,
+            accZ: accelerationIncludingGravity.z || 0,
+            gyroX: rotationRate.beta || 0,
+            gyroY: rotationRate.gamma || 0,
+            gyroZ: rotationRate.alpha || 0,
+            timestamp: Date.now()
+        };
+
+        imuLog.push(logEntry);
+
+    }, 1000 / 60); // ~60Hz
+}
+
+function stopIMULogging() {
+  clearInterval(imuInterval);
+  imuInterval = null;
+
+  const payload = JSON.stringify({
+    type: "imu_log",
+    subject: subID,
+    data: imuLog
+  });
+
+  if (imuSocket && imuSocket.readyState === WebSocket.OPEN) {
+    imuSocket.send(payload);
+    console.log("IMU log sent to server via WebSocket.");
+  } else {
+    imuSocket.addEventListener('open', () => {
+      imuSocket.send(payload);
+      console.log("IMU log sent after WebSocket opened.");
+    });
+  }
+}
+
+
 
 
 
