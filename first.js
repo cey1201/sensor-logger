@@ -44,7 +44,7 @@ let imuLog = [];
 
 // socket to connect to my computer
 function startWebSocket() {
-  imuSocket = new WebSocket('ws://192.168.0.139:3000');
+  imuSocket = new WebSocket('wss://192.168.0.139:3000');
 
   imuSocket.onopen = () => {
     console.log("WebSocket connection established.");
