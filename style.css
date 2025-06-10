@@ -66,7 +66,7 @@ option {
     color: black;
     width: 80%;
     margin: auto;
-    font-size: 20px;
+    font-size: 30px;
     text-align: center;
     font-family: Helvetica;
     margin-top: 5vh;
@@ -99,7 +99,7 @@ option {
 #PIN_display {
     display: none;
     text-align: center;
-    margin-top: 5vh;
+    margin-top: 2vh;
     height: 10vh;
 }
 
@@ -110,7 +110,7 @@ option {
     justify-content: flex-end;
     width: 100%;
     position: absolute;
-    bottom: 12vh;
+    bottom: 8vh;
     left: 50%;
     transform: translateX(-50%);
     box-sizing: border-box;
