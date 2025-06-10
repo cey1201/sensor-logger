@@ -60,14 +60,14 @@ option {
 }
 
 #head {
-  margin-top: 10vh;
+  margin-top: 6vh;
   font-weight: bold;
   line-height: 6.5vh;
   font-size: 1.25rem;
 }
 
 #body {
-  margin-top: 10vh;
+  margin-top: 7vh;
 }
 
 .question {
@@ -85,7 +85,7 @@ option {
   justify-content: flex-end;
   width: 100%;
   position: absolute;
-  bottom: 12vh;
+  bottom: 15vh;
   left: 50%;
   transform: translateX(-50%);
   box-sizing: border-box;
