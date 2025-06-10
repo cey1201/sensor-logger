@@ -115,6 +115,7 @@ function PINup(event) {
         // Optional: End message or transition
         head.innerText = "All PIN entries complete.";
         body.innerText = "Thank you for participating.";
+        body.style.fontSize = "16px";
         PINcontainer.style.display = 'none';
         PINdisplay.style.display = 'none';
       } else {
