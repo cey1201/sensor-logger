@@ -85,7 +85,7 @@ option {
   justify-content: flex-end;
   width: 100%;
   position: absolute;
-  bottom: 20vh;
+  bottom: 12vh;
   left: 50%;
   transform: translateX(-50%);
   box-sizing: border-box;
@@ -98,8 +98,9 @@ option {
 
 #PIN_display {
   text-align: center;
-  margin: auto;
+  margin-top: 5vh;
   display: none;
+  height: 10vh;
 }
 
 .PIN_pad {
