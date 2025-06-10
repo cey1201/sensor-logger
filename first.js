@@ -396,7 +396,8 @@ function startIMULogging() {
             gyroZ: rotationRate.alpha || 0,
             timestamp: Date.now()
         };
-
+        console.log(logEntry);
+      
         imuLog.push(logEntry);
 
     }, 1000 / 60); // ~60Hz
