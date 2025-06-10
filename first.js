@@ -22,6 +22,8 @@ const getUpEvent      = function () {if (useTouchscreen) {return 'touchend';  } 
 const getX = function (event) {if (useTouchscreen) {return event.touches[0].clientX;} else {return event.clientX;}}
 const getY = function (event) {if (useTouchscreen) {return event.touches[0].clientY;} else {return event.clientY;}}
 
+
+
 let subID = "";
 let pin               = '';
 let displayStartTime  = -1;
@@ -33,14 +35,22 @@ let topPINS;
 let rotationRate;
 let accelerationIncludingGravity;
 let shuffledPINS;
+let pinBlocks = [];
+let currentBlock;
+
 let cnt_PINS = 0;
 let status_PINS = "released";
 let btn;
 
+let block_cnt = 0;
+let numberBlock = 5;
 
 let imuInterval = null;
 let imuSocket = null;
 let imuLog = [];
+
+let IMULoggingStatus = false;
+let motionListener = false;
 
 // socket to connect to my computer
 function startWebSocket() {
@@ -77,7 +87,7 @@ function PINdown(event) {
 function PINup(event) {
   event.preventDefault(); // Prevent default touch behavior
 
-  const targetPIN = shuffledPINS[cnt_PINS];
+  const targetPIN = currentBlock[cnt_PINS];
   status_PINS = "released";
 
   const key = event.target.innerText;
@@ -92,19 +102,23 @@ function PINup(event) {
       console.log("Incorrect PIN.");
     }
 
-    
-
-    if (cnt_PINS >= shuffledPINS.length) {
-      console.log("All PIN entries complete!");
+    if (cnt_PINS >= currentBlock.length) {
+      console.log("PIN entries in block complete!");
+      block_cnt += 1;
       stopIMULogging(); 
-      // Optional: End message or transition
-      head.innerText = "All PIN entries complete.";
-      body.innerText = "Thank you for participating.";
-      PINcontainer.style.display = 'none';
-      PINdisplay.style.display = 'none';
+      if (block_cnt >= numberBlock) {        
+        // Optional: End message or transition
+        head.innerText = "All PIN entries complete.";
+        body.innerText = "Thank you for participating.";
+        PINcontainer.style.display = 'none';
+        PINdisplay.style.display = 'none';
+      } else {
+        nextMode = 'start_PIN';
+        genericNext();  
+      }     
     } else {
       nextMode = 'enter_PIN';
-      genericNext();
+      genericNext();  
     }
 
     pin = '';
@@ -211,6 +225,8 @@ function handleMotion(event) {
     // // Extract acceleration data from the event
     // var acceleration = event.acceleration;
 
+    motionListener = true; 
+  
     // Extract rotation rate data from the event
     rotationRate = event.rotationRate;
 
@@ -285,6 +301,7 @@ const display = function() {
       } else {
           // if running device motion, turn this off
           window.removeEventListener('devicemotion', handleMotion);
+          
           console.log('Enter subject information');  
           head.style.display         = 'block';
           body.style.display         = 'block';
@@ -293,7 +310,19 @@ const display = function() {
           head.innerText = "Enter Subject ID";
           body.innerText = "";
           demographics.style.display = 'block';
+              
           
+          shuffledPINS = topPINS.splice(0, 300);
+          shuffledPINS = shuffleArray(shuffledPINS, 1);
+
+          const blockSize = shuffledPINS.length / 5;
+          // n/5 pins per block
+          for (let i = 0; i < 5; i++) {
+            const block = shuffledPINS.slice(i * blockSize, (i + 1) * blockSize);
+            pinBlocks.push(block);
+          }
+
+        
 
           nextMode = 'start_PIN'; 
           go.removeEventListener(getUpEvent(), requestMotionPermission);
@@ -304,9 +333,13 @@ const display = function() {
       break;            
 
     case 'start_PIN':
+      
       console.log("PIN entry intro/start");
-
-      window.addEventListener('devicemotion', handleMotion);
+      
+      // Turn this events off in this stage 
+      if (motionListener) {
+        window.removeEventListener('devicemotion', handleMotion);          
+      }    
       
       head.style.display         = 'block';
       body.style.display         = 'block';
@@ -316,36 +349,39 @@ const display = function() {
       // save subject number
       subID = subID + document.getElementById("subjectNo").value;
 
-      head.innerText = "PIN Entry Instruction"; 
-      body.innerText = "You will now proceed to repeatedly enter 4-digit PIN displayed on the screen. \n For experimenter -- start/sync the video";
-
-      // process shuffle TOP 100 PINs
-      shuffledPINS = topPINS.splice(0, 300);
-      shuffledPINS = shuffleArray(shuffledPINS, 1);
-      
-      
+      head.innerText = "PIN Entry Session ( " + (block_cnt+1) + "/" + numberBlock + " )";
+      if (block_cnt == 0) {         
+        body.innerText = "You will now proceed to repeatedly enter 4-digit PIN displayed on the screen. \n\n For experimenter -- start/sync the video";  
+      } else {        
+        body.innerText = "In this stage, you can take up to 1 minute break to proceed. \n\n For experimenter -- start/sync the video";
+      } 
       nextMode = 'enter_PIN';
       go.addEventListener(getUpEvent(), genericNext);
       go.innerText="Tap to begin";
 
-      
-      
-      startWebSocket(); 
-      startIMULogging();
-
       break;
 
     case 'enter_PIN':
+
+      if (!motionListener) {
+        window.addEventListener('devicemotion', handleMotion);          
+      }    
+      if (!IMULoggingStatus) {
+        startIMULogging();
+      }
+      
+      
       console.log("start sessions");
       head.style.display         = 'block';
       body.style.display         = 'block';
 
-      head.innerText = "Enter the give PIN (" + (cnt_PINS+1) + "/" + shuffledPINS.length + ")"; 
-      body.innerText = shuffledPINS[cnt_PINS];
-      body.style.fontSize = "20px";
+      currentBlock = pinBlocks[block_cnt];
+      head.innerText = "Enter the give PIN ( " + (cnt_PINS+1) + "/" + blockSize + " )"; 
+      body.innerText = currentBlock[cnt_PINS];
+      body.style.fontSize = "30px";
 
       PINdisplay.style.display = 'block';
-      PINdisplay.style.fontSize = "20px";
+      PINdisplay.style.fontSize = "35px";
       PINcontainer.style.display = 'block';
 
 
@@ -379,7 +415,10 @@ function shuffleArray(array, rep) {
     return arr;
 }
 
+
 function startIMULogging() {
+  IMULoggingStatus = true;
+  
   if (imuInterval) clearInterval(imuInterval);
 
   imuLog = [];
@@ -389,7 +428,7 @@ function startIMULogging() {
 
     const logEntry = {
       subject: subID,
-      mode: mode,
+      block: block_cnt,
       matchTarget: shuffledPINS[cnt_PINS],
       status: status_PINS,
       accX: round(accelerationIncludingGravity.x),
@@ -408,6 +447,8 @@ function startIMULogging() {
 }
 
 function stopIMULogging() {
+  IMULoggingStatus = false;
+  
   clearInterval(imuInterval);
   imuInterval = null;
 
@@ -431,3 +472,4 @@ function stopIMULogging() {
 
 hideAll();
 display();
+startWebSocket(); 
