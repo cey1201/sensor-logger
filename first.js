@@ -317,7 +317,7 @@ const display = function() {
       subID = subID + document.getElementById("subjectNo").value;
 
       head.innerText = "PIN Entry Instruction"; 
-      body.innerText = "You will now proceed to repeatedly enter 4-digit PIN displayed on the screen."
+      body.innerText = "You will now proceed to repeatedly enter 4-digit PIN displayed on the screen. \n For experimenter -- start/sync the video";
 
       // process shuffle TOP 100 PINs
       shuffledPINS = topPINS.splice(0, 300);
