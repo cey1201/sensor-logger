@@ -110,7 +110,7 @@ option {
     justify-content: flex-end;
     width: 100%;
     position: absolute;
-    bottom: 15vh;
+    bottom: 12vh;
     left: 50%;
     transform: translateX(-50%);
     box-sizing: border-box;
@@ -165,7 +165,7 @@ option {
 
     position: absolute;
     left: 27vw;
-    bottom: 22vw;
+    bottom: 12vw;
 
     line-height: 15vw;
 }
