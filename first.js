@@ -107,7 +107,10 @@ function PINup(event) {
       console.log("PIN entries in block complete!");
       cnt_PINS = 0;
       block_cnt += 1;
+      
+      // export via websocket
       stopIMULogging(); 
+      
       if (block_cnt >= numberBlock) {        
         // Optional: End message or transition
         head.innerText = "All PIN entries complete.";
@@ -354,8 +357,10 @@ const display = function() {
       head.innerText = "PIN Entry Session ( " + (block_cnt+1) + "/" + numberBlock + " )";
       if (block_cnt == 0) {         
         body.innerText = "You will now proceed to repeatedly enter 4-digit PIN displayed on the screen. \n\n For experimenter -- start/sync the video";  
+        body.style.fontSize = "16px";
       } else {        
         body.innerText = "In this stage, you can take up to 1 minute break to proceed. \n\n For experimenter -- start/sync the video";
+        body.style.fontSize = "16px";
       } 
       nextMode = 'enter_PIN';
       go.addEventListener(getUpEvent(), genericNext);
