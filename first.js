@@ -320,7 +320,7 @@ const display = function() {
       body.innerText = "You will now proceed to repeatedly enter 4-digit PIN displayed on the screen."
 
       // process shuffle TOP 100 PINs
-      shuffledPINS = topPINS.splice(0, 9);
+      shuffledPINS = topPINS.splice(0, 300);
       shuffledPINS = shuffleArray(shuffledPINS, 1);
       
       
