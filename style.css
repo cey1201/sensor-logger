@@ -97,7 +97,8 @@ option {
 }
 
 #PIN_display {
-  margin-top: 5vh;
+  text-align: center;
+  margin: auto;
   display: none;
 }
 
