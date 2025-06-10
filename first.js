@@ -37,6 +37,7 @@ let accelerationIncludingGravity;
 let shuffledPINS;
 let pinBlocks = [];
 let currentBlock;
+let blockSize;
 
 let cnt_PINS = 0;
 let status_PINS = "released";
@@ -315,7 +316,7 @@ const display = function() {
           shuffledPINS = topPINS.splice(0, 15);
           shuffledPINS = shuffleArray(shuffledPINS, 1);
 
-          const blockSize = shuffledPINS.length / 5;
+          blockSize = shuffledPINS.length / 5;
           // n/5 pins per block
           for (let i = 0; i < 5; i++) {
             const block = shuffledPINS.slice(i * blockSize, (i + 1) * blockSize);
