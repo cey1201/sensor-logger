@@ -353,7 +353,7 @@ const display = function() {
 
       demographics.style.display = 'none';
       // save subject number
-      subID = subID + document.getElementById("subjectNo").value;
+      subID = document.getElementById("subjectNo").value + "_bk" + block_cnt;
 
       head.innerText = "PIN Entry Session ( " + (block_cnt+1) + "/" + numberBlock + " )";
       if (block_cnt == 0) {         
