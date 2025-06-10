@@ -1,151 +1,171 @@
-* {
-  -webkit-tap-highlight-color: transparent;
+div {
+    /* DEBUG: Area specification */
+    /* border: 1px solid red; */
+}
+img {
+    /* DEBUG: Area specification */
+    /* border: 1px solid red; */
 }
 
-div, img {
-  /* DEBUG: Area specification */
-  /* border: 1px solid red; */
+html, body {
+    background-color: white;
+    overscroll-behavior-y: contain;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    touch-action: none;
 }
 
-body {
-  background-color: white;
-  overscroll-behavior-y: contain;
-  position: relative;
-  height: 100vh;
-  margin: 0;
-}
-
+/* General select UI */
 select {
-  background-color: white;
-  max-width: 100%;
+    background-color: white;
+    max-width: 100%;
 }
 
 option {
-  white-space: pre-wrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  border-bottom: 0.1vw solid black;
+    white-space: pre-wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: 1px solid #DDD;
 }
 
+/* Overall screen */
 .screen {
-  background-color: white;
-  color: black;
-  width: 100%;
-  height: 100vh;
-  position: relative;
-  font-size: 1.125rem; /* 18px */
-  text-align: center;
-  font-family: Helvetica, Arial, sans-serif;
-  margin: 0 auto;
+    background-color: white;
+    color: black;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 18px;
+    text-align: center;
+    font-family: Helvetica, Arial, sans-serif;
+    margin: auto;
 }
 
-.text,
-.textLarge {
-  background: white;
-  color: black;
-  width: 80%;
-  margin: auto;
-  font-family: Helvetica;
-  text-align: center;
-}
-
+/* Text styles */
 .text {
-  font-size: 1rem; /* 16px */
-  margin-top: 5vh;
+    background: white;
+    color: black;
+    width: 80%;
+    margin: auto;
+    font-size: 16px;
+    text-align: center;
+    font-family: Helvetica;
+    margin-top: 5vh;
 }
 
 .textLarge {
-  font-size: 1.35rem; /* 20px */
-  margin-top: 5vh;
+    background: white;
+    color: black;
+    width: 80%;
+    margin: auto;
+    font-size: 20px;
+    text-align: center;
+    font-family: Helvetica;
+    margin-top: 5vh;
 }
 
 #head {
-  margin-top: 6vh;
-  font-weight: bold;
-  line-height: 6.5vh;
-  font-size: 1.25rem;
+    margin-top: 6vh;
+    font-weight: bold;
+    line-height: 6.5vh;
+    font-size: 20px;
 }
 
 #body {
-  margin-top: 7vh;
+    margin-top: 7vh;
 }
 
+/* Question layout */
 .question {
-  text-align: center;
-  margin: auto;
+    text-align: center;
+    margin: auto;
 }
 
+/* Hidden containers */
 #demographics {
-  display: none;
+    display: none;
 }
-
-.PIN_container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  width: 100%;
-  position: absolute;
-  bottom: 15vh;
-  left: 50%;
-  transform: translateX(-50%);
-  box-sizing: border-box;
-  padding: 0 5vw;
-}
-
 #PINcontainer {
-  display: none;
+    display: none;
 }
-
 #PIN_display {
-  text-align: center;
-  margin-top: 5vh;
-  display: none;
-  height: 10vh;
+    display: none;
+    text-align: center;
+    margin-top: 5vh;
+    height: 10vh;
 }
 
+/* PIN input container */
+.PIN_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 100%;
+    position: absolute;
+    bottom: 15vh;
+    left: 50%;
+    transform: translateX(-50%);
+    box-sizing: border-box;
+    padding: 0 5vw;
+}
+
+/* PIN keypad */
 .PIN_pad {
-  display: grid;
-  grid-template-columns: repeat(3, 20vw); /* Responsive keypad */
-  grid-gap: 5vw;
-  justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 20vw);
+    grid-gap: 5vw;
+    justify-content: center;
 }
 
 .PIN_button {
-  width: 20vw;
-  height: 20vw;
-  border-radius: 50%;
-  border: none;
-  background-color: #e0e0e0;
-  font-size: 1.5rem;
-  color: #000;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s;
-  outline: none;
-  box-shadow: none;
+    width: 20vw;
+    height: 20vw;
+    border-radius: 50%;
+    border: none;
+    background-color: #e0e0e0;
+    font-size: 1.5rem;
+    color: #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    outline: none;
+    box-shadow: none;
 }
 
 .PIN_button:active {
-  background-color: #999;
+    background-color: #999;
 }
 
+/* Zero key centered */
 .zero {
-  grid-column: 2;
+    grid-column: 2;
 }
 
+/* Submit/go button */
 #go {
-  background: white;
-  color: black;
-  font-size: 1.25rem;
-  text-align: center;
-  font-family: Helvetica;
-  border: 1px solid gray;
-  width: 46vw;
-  height: 15vw;
-  position: absolute;
-  left: 27vw;
-  bottom: 22vw;
-  line-height: 15vw;
+    background: white;
+    color: black;
+    font-size: 20px;
+    text-align: center;
+    font-family: Helvetica;
+    border: 1px solid gray;
+
+    width: 46vw;
+    height: 15vw;
+
+    position: absolute;
+    left: 27vw;
+    bottom: 22vw;
+
+    line-height: 15vw;
 }
