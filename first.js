@@ -105,6 +105,7 @@ function PINup(event) {
 
     if (cnt_PINS >= currentBlock.length) {
       console.log("PIN entries in block complete!");
+      cnt_PINS = 0;
       block_cnt += 1;
       stopIMULogging(); 
       if (block_cnt >= numberBlock) {        
