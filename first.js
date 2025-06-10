@@ -311,8 +311,8 @@ const display = function() {
           body.innerText = "";
           demographics.style.display = 'block';
               
-          
-          shuffledPINS = topPINS.splice(0, 300);
+          // set to 300 PINs for real study
+          shuffledPINS = topPINS.splice(0, 15);
           shuffledPINS = shuffleArray(shuffledPINS, 1);
 
           const blockSize = shuffledPINS.length / 5;
