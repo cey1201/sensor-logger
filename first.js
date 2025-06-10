@@ -86,7 +86,7 @@ function PINup(event) {
 
   if (pin.length === targetPIN.length) {
     if (pin === targetPIN) {
-      console.log("PIN correct!");
+      console.log("PIN correct");
       cnt_PINS += 1;
     } else {
       console.log("Incorrect PIN.");
@@ -122,7 +122,7 @@ function loadCSV() {
   fetch('top_PINS.csv')
   .then(res => res.text())
   .then(csvText => {    
-    console.log(csvText);
+    // console.log(csvText);
     topPINS = csvText;
     topPINS = topPINS.split('\r\n');
   })
@@ -401,7 +401,7 @@ function startIMULogging() {
       timestamp: Date.now()
     };
 
-    console.log(logEntry);
+    // console.log(logEntry);
     imuLog.push(logEntry);
 
   }, 1000 / 60); // ~60Hz
@@ -427,10 +427,6 @@ function stopIMULogging() {
     });
   }
 }
-
-
-
-
 
 
 hideAll();
