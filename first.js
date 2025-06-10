@@ -359,6 +359,10 @@ const display = function() {
  * FUNC: Implementation / logger
  */
 
+function round(value, decimals = 4) {
+  return typeof value === 'number' ? +value.toFixed(decimals) : 0;
+}
+
 function shuffleArray(array, rep) {
     const arr = [];
     for (var i = 0; i < array.length; i++) {
@@ -376,31 +380,31 @@ function shuffleArray(array, rep) {
 }
 
 function startIMULogging() {
-    if (imuInterval) clearInterval(imuInterval);
+  if (imuInterval) clearInterval(imuInterval);
 
-    imuLog = [];
+  imuLog = [];
 
-    imuInterval = setInterval(() => {
-        if (!accelerationIncludingGravity || !rotationRate) return;
+  imuInterval = setInterval(() => {
+    if (!accelerationIncludingGravity || !rotationRate) return;
 
-        const logEntry = {
-            subject: subID,
-            mode: mode,
-            matchTarget: shuffledPINS[cnt_PINS],
-            status: status_PINS,
-            accX: accelerationIncludingGravity.x || 0,
-            accY: accelerationIncludingGravity.y || 0,
-            accZ: accelerationIncludingGravity.z || 0,
-            gyroX: rotationRate.beta || 0,
-            gyroY: rotationRate.gamma || 0,
-            gyroZ: rotationRate.alpha || 0,
-            timestamp: Date.now()
-        };
-        console.log(logEntry);
-      
-        imuLog.push(logEntry);
+    const logEntry = {
+      subject: subID,
+      mode: mode,
+      matchTarget: shuffledPINS[cnt_PINS],
+      status: status_PINS,
+      accX: round(accelerationIncludingGravity.x),
+      accY: round(accelerationIncludingGravity.y),
+      accZ: round(accelerationIncludingGravity.z),
+      gyroX: round(rotationRate.beta),
+      gyroY: round(rotationRate.gamma),
+      gyroZ: round(rotationRate.alpha),
+      timestamp: Date.now()
+    };
 
-    }, 1000 / 60); // ~60Hz
+    console.log(logEntry);
+    imuLog.push(logEntry);
+
+  }, 1000 / 60); // ~60Hz
 }
 
 function stopIMULogging() {
