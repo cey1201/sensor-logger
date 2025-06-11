@@ -230,9 +230,6 @@ const DBfound = function() {
 function handleMotion(event) {
     // // Extract acceleration data from the event
     // var acceleration = event.acceleration;
-
-    motionListener = true; 
-  
     // Extract rotation rate data from the event
     rotationRate = event.rotationRate;
 
@@ -344,7 +341,8 @@ const display = function() {
       
       // Turn this events off in this stage 
       if (motionListener) {
-        window.removeEventListener('devicemotion', handleMotion);          
+        window.removeEventListener('devicemotion', handleMotion);     
+        motionListener = false;
       }    
       
       head.style.display         = 'block';
@@ -372,7 +370,8 @@ const display = function() {
     case 'enter_PIN':
 
       if (!motionListener) {
-        window.addEventListener('devicemotion', handleMotion);          
+        window.addEventListener('devicemotion', handleMotion);   
+        motionListener = true;
       }    
       if (!IMULoggingStatus) {
         startIMULogging();
