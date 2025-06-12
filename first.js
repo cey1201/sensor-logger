@@ -253,14 +253,20 @@ function hideAll() {
 const genericNext = function () {
 
   if (nextMode == 'enter_PIN') {
-    mode = nextMode;
-    playBeepStart();
 
-    // Wait 200ms after beep starts before switching screen
-    setTimeout(() => {
+    if (mode == 'start_PIN' ) {
+      playBeepStart();  
+      mode = nextMode;
+      // Wait 200ms after beep starts before switching screen
+      setTimeout(() => {
+        hideAll();
+        display();
+      }, 200);
+    } else {
+      mode = nextMode;
       hideAll();
       display();
-    }, 200);
+    }    
   } else if (nextMode == 'start_PIN' && block_cnt > 0) {
     mode = nextMode;
 
