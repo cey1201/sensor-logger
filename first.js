@@ -252,7 +252,7 @@ function hideAll() {
 
 const genericNext = function () {
 
-  if (nextMode == 'start_PIN') {
+  if (nextMode == 'enter_PIN') {
     mode = nextMode;
     playBeep();
 
