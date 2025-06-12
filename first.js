@@ -252,10 +252,21 @@ function hideAll() {
 
 const genericNext = function () {
 
-  mode = nextMode;
-  body.removeEventListener(getUpEvent(), genericNext);
-  hideAll();
-  display();
+  if (nextMode == 'start_PIN') {
+    mode = nextMode;
+    playBeep();
+
+    // Wait 200ms after beep starts before switching screen
+    setTimeout(() => {
+      hideAll();
+      display();
+    }, 200);
+  } else {
+    mode = nextMode;
+    body.removeEventListener(getUpEvent(), genericNext);
+    hideAll();
+    display();
+  }
     
 }
 
@@ -475,6 +486,25 @@ function stopIMULogging() {
     });
   }
 }
+
+function playBeep() {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = ctx.createOscillator();
+      const gainNode = ctx.createGain();
+
+      oscillator.type = 'sine'; // 'square' is louder but harsher
+      oscillator.frequency.setValueAtTime(1000, ctx.currentTime); // 1000 Hz beep
+      gainNode.gain.setValueAtTime(0.3, ctx.currentTime); // volume
+
+      oscillator.connect(gainNode);
+      gainNode.connect(ctx.destination);
+
+      oscillator.start();
+      oscillator.stop(ctx.currentTime + 0.2); // 200ms beep
+
+      // Optional: log time of beep for syncing
+      console.log("Beep at: ", performance.now());
+    }
 
 
 hideAll();
