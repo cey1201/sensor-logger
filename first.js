@@ -254,13 +254,29 @@ const genericNext = function () {
 
   if (nextMode == 'enter_PIN') {
     mode = nextMode;
-    playBeep();
+    playBeepStart();
 
     // Wait 200ms after beep starts before switching screen
     setTimeout(() => {
       hideAll();
       display();
     }, 200);
+  } else if (nextMode == 'start_PIN' && block_cnt > 0) {
+    mode = nextMode;
+
+    if (block_cnt > 0) {
+      playBeepEnd();
+  
+      // Wait 200ms after beep starts before switching screen
+      setTimeout(() => {
+        hideAll();
+        display();
+      }, 200);  
+    } else {
+      hideAll();
+      display();
+    }
+    
   } else {
     mode = nextMode;
     body.removeEventListener(getUpEvent(), genericNext);
@@ -487,24 +503,43 @@ function stopIMULogging() {
   }
 }
 
-function playBeep() {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = ctx.createOscillator();
-      const gainNode = ctx.createGain();
+function playBeepStart() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const oscillator = ctx.createOscillator();
+  const gainNode = ctx.createGain();
 
-      oscillator.type = 'sine'; // 'square' is louder but harsher
-      oscillator.frequency.setValueAtTime(1000, ctx.currentTime); // 1000 Hz beep
-      gainNode.gain.setValueAtTime(0.3, ctx.currentTime); // volume
+  oscillator.type = 'sine'; // smooth tone
+  oscillator.frequency.setValueAtTime(600, ctx.currentTime);         // start low
+  oscillator.frequency.linearRampToValueAtTime(1200, ctx.currentTime + 0.2); // sweep up
 
-      oscillator.connect(gainNode);
-      gainNode.connect(ctx.destination);
+  gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+  oscillator.connect(gainNode);
+  gainNode.connect(ctx.destination);
 
-      oscillator.start();
-      oscillator.stop(ctx.currentTime + 0.2); // 200ms beep
+  oscillator.start();
+  oscillator.stop(ctx.currentTime + 0.2); // 200ms
 
-      // Optional: log time of beep for syncing
-      console.log("Beep at: ", performance.now());
-    }
+  console.log("Start beep at:", performance.now());
+}
+
+function playBeepEnd() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const oscillator = ctx.createOscillator();
+  const gainNode = ctx.createGain();
+  
+  oscillator.type = 'sine';
+  oscillator.frequency.setValueAtTime(1200, ctx.currentTime);         // start high
+  oscillator.frequency.linearRampToValueAtTime(600, ctx.currentTime + 0.3); // sweep down
+
+  gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+  oscillator.connect(gainNode);
+  gainNode.connect(ctx.destination);
+
+  oscillator.start();
+  oscillator.stop(ctx.currentTime + 0.3); // 300ms for emphasis
+
+  console.log("End beep at:", performance.now());
+}
 
 
 hideAll();
