@@ -348,7 +348,7 @@ const display = function() {
           demographics.style.display = 'block';
               
           // set to 300 PINs for real study
-          shuffledPINS = topPINS.splice(0, 15);
+          shuffledPINS = topPINS.splice(0, 300);
           shuffledPINS = shuffleArray(shuffledPINS, 1);
 
           blockSize = shuffledPINS.length / 5;
