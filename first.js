@@ -471,12 +471,12 @@ function startIMULogging() {
       block: block_cnt,
       matchTarget: shuffledPINS[cnt_PINS],
       status: status_PINS,
-      accX: round(accelerationIncludingGravity.x),
-      accY: round(accelerationIncludingGravity.y),
-      accZ: round(accelerationIncludingGravity.z),
-      gyroX: round(rotationRate.beta),
-      gyroY: round(rotationRate.gamma),
-      gyroZ: round(rotationRate.alpha),
+      accX: round(accelerationIncludingGravity.x, 4),
+      accY: round(accelerationIncludingGravity.y, 4),
+      accZ: round(accelerationIncludingGravity.z, 4),
+      gyroX: round(rotationRate.beta, 4),
+      gyroY: round(rotationRate.gamma, 4),
+      gyroZ: round(rotationRate.alpha, 4),
       timestamp: Date.now()
     };
 
